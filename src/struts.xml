@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 默认的视图主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 指定默认编码集,作用于HttpServletRequest的setCharacterEncoding方法 和freemarker 、velocity的输出 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!--上传文件的大小限制2M -->
+	<constant name="struts.multipart.maxSize" value="2097152" />
+	<!-- 设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好关闭 -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+	<!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 该属性设置Struts 2是否支持动态方法调用，该属性的默认值是true。如果需要关闭动态方法调用，则可设置该属性为false。 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<!-- 与spring集成时，指定由spring负责action对象的创建 -->
+	<constant name="struts.objectFactory" value="spring" />
+	
+	<!-- default -->
+	<package name="default" namespace="/" extends="struts-default">
+		<global-results>
+			<!-- 做内容输出 -->
+			<result name="message">/WEB-INF/page/common/message.jsp</result>
+			<!-- 对话框 -->
+			<result name="dialog">/WEB-INF/page/common/dialog.jsp</result>
+			<!-- 跳转 -->
+			<result name="redirect">/WEB-INF/page/common/redirect.jsp</result>
+		</global-results>
+	</package>
+	
+	<!-- 前台模块  start -->
+	<package name="fore" namespace="/" extends="default">
+		<!-- 首页面 -->
+		<action name="index"><result>/WEB-INF/page/fore/index.jsp</result></action>
+	</package>
+	<!-- 前台模块  end -->
+	
+	<!-- 后台管理界面 start -->
+	<package name="control" namespace="/control" extends="default">
+		<!-- 后台首页 -->
+		<action name="index"><result>/WEB-INF/page/back/index.jsp</result></action>
+		<!-- 后台首页左半部分 -->
+		<action name="left"><result>/WEB-INF/page/back/left.jsp</result></action>
+		<!-- 后台首页右半部分 -->
+		<action name="right"><result>/WEB-INF/page/back/right.jsp</result></action>
+		<!-- 后台首页头部 -->
+		<action name="top"><result>/WEB-INF/page/back/top.jsp</result></action>
+		<!-- 进入后台登陆页面 -->
+		<action name="login"><result>/WEB-INF/page/back/login.jsp</result></action>
+	</package>
+	<!-- 后台管理界面 end -->
+	
+	<!-- 搜索模块 start -->
+	<package name="search" namespace="/" extends="default">
+		<!-- 搜索控制器 -->
+		<action name="q" class="searchAction">
+			<result name="result">/WEB-INF/page/search/result.jsp</result>
+		</action>
+	</package>
+	<!-- 搜索模块 end -->
+	
+	<!-- 公交模块 start -->
+	<!-- 公交车站 -->
+	<package name="station" namespace="/control/station" extends="default">
+		<action name="addUI"><result>/WEB-INF/page/bus/addStationUI.jsp</result></action>
+		<action name="manage_*" class="stationManageAction" method="{1}"></action>
+		<action name="list" class="stationAction"><result>/WEB-INF/page/bus/stationList.jsp</result><result name="select">/WEB-INF/page/bus/stationSelect.jsp</result></action>
+	</package>
+	<!-- 公交路线 -->
+	<package name="busLine" namespace="/control/busLine" extends="default">
+		<action name="addUI"><result>/WEB-INF/page/bus/addBusLineUI.jsp</result></action>
+		<action name="manage_*" class="busLineManageAction" method="{1}"></action>
+		<action name="list" class="busLineAction"><result>/WEB-INF/page/bus/busLineList.jsp</result></action>
+	</package>
+	<!-- 车站路线对应关系 -->
+	<package name="line_station" namespace="/control/line_station" extends="default">
+		<action name="list" class="line_stationAction"><result>/WEB-INF/page/bus/line_stationList.jsp</result></action>
+		<action name="manage_*" class="line_stationManageAction" method="{1}"></action>
+	</package>
+	<!-- 公交模块的前台页面 -->
+	<package name="busFore" namespace="/" extends="default">
+		<!-- 公交路线详细信息 -->
+		<action name="buslinedetails" class="busLineDetailsAction"><result name="details">/WEB-INF/page/bus/fore/buslinedetails.jsp</result></action>
+		<!-- 车站相信信息 -->
+		<action name="stationDetails" class="stationDetailsAction"><result name="details">/WEB-INF/page/bus/fore/stationDetails.jsp</result></action>
+		<!-- 公交路线列表 -->
+		<action name="busLine" class="busLineAction" method="fore"><result>/WEB-INF/page/bus/fore/busLineList.jsp</result></action>
+		<!-- 车站列表 -->
+		<action name="station" class="stationAction" method="fore"><result>/WEB-INF/page/bus/fore/stationList.jsp</result></action>
+	</package>
+	<!-- 公交模块 end -->
+	
+	<!-- 上传文件模块 start -->
+	<package name="uploadfile" namespace="/control/uploadfile" extends="default">
+		<!-- 后台上传界面 -->
+		<action name="uploadUI"><result>/WEB-INF/page/uploadfile/uploadUI.jsp</result></action>
+		<!-- 文件管理控制器 -->
+		<action name="manage_*" class="uploadFileManageAction" method="{1}"></action>
+		<!-- 文件列表界面 -->
+		<action name="list" class="uploadFileAction"><result>/WEB-INF/page/uploadfile/fileList.jsp</result></action>
+	</package>
+	<!-- 上传文件模块 end -->
+	
+	<!-- 新闻模板 start -->
+	<package name="news_background" namespace="/control/news" extends="default">
+		<!-- 添加新闻界面 -->
+		<action name="addUI"><result>/WEB-INF/page/news/addNews.jsp</result></action>
+		<!-- 新闻管理控制器 -->
+		<action name="mamage_*" class="newsManageAction" method="{1}"></action>
+		<!-- 新闻列表控制器 -->
+		<action name="list" class="newsAction"><result>/WEB-INF/page/news/newsList.jsp</result></action>
+	</package>
+	<package name="news_foreground" namespace="/" extends="default">
+		<action name="news_*" class="foreNewsAction" method="{1}">
+			<result name="list">/WEB-INF/page/news/fore/newsList.jsp</result>
+			<result name="detail">/WEB-INF/page/news/detail.jsp</result>
+		</action>
+	</package>
+	<!-- 新闻模板 end -->
+	
+	<!-- 用户模板  start-->
+	<package name="users" namespace="/" extends="default">
+		<!-- 后台登陆页面 -->
+		<action name="admin"><result>/WEB-INF/page/user/login.jsp</result></action>
+		<!-- 登录控制器 -->
+		<action name="login" class="usersSign" method="login">
+			<result name="error">/WEB-INF/page/user/login.jsp</result>
+		</action>
+	</package>
+	<!-- 用户模板  end-->
+	
+	<!-- system start -->
+	<package name="system" namespace="/" extends="default">
+		<!-- 反馈页面 -->
+		<action name="feedback"><result>/WEB-INF/page/system/feedback/feedback.jsp</result></action>
+		<!-- 添加反馈 -->
+		<action name="feedbackAction" class="feedbackAction" method="add"/>
+	</package>
+	<!-- system end -->
+</struts>
