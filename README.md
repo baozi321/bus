@@ -26,10 +26,12 @@
     
   开发环境：
     Eclipse Java EE Luna (4.4.1)、Windows 8.1、JDK1.7、Tomcat7.0、Mysql5.1
+    
   框架：
     Struts-2.3.16.3
     Spring 2.5
     JPA(Hibernate) 3.3
+    
   前台使用的框架及插件：
     Bootstrap 3.3.0
     Jquery 1.11.2
